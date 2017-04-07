@@ -5,7 +5,29 @@ var labels = config.modelLabels;
 var dataset = config.datasetIDs;
 
 var messagesSchema = new Schema({
-
+  id: {
+    type: String
+  },
+  receiverId: {
+    type: String
+  },
+  status: {
+    type: String
+  },
+  sender: {
+    avatar: {
+      type: String
+    },
+    name: {
+      type: String
+    }
+  },
+  subject: {
+    type: String
+  },
+  content: {
+    type: String
+  }
 });
 
 module.exports = function(db) {
