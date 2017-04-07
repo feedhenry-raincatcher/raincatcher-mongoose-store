@@ -6,8 +6,8 @@ var dataset = config.datasetIDs;
 
 var workorderSchema = new Schema({
   id: {type: String },
-  workflowId: {type: Date },
-  assignee: {type: Date },
+  workflowId: {type: String },
+  assignee: {type: String },
   type: {type: String },
   title: {type: String },
   status: {type: String },

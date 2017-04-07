@@ -1,7 +1,6 @@
 'use strict';
 
 var config = require('./../lib/config');
-var Mongoose = require('mongoose');
 var assert = require('assert');
 var Models = require('./../models');
 var Connector = require('./../lib');
