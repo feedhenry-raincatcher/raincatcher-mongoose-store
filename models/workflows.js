@@ -4,11 +4,10 @@ var config = require('./../lib/config');
 var labels = config.modelLabels;
 var dataset = config.datasetIDs;
 
-var workflowSchema = new Schema({any: {}},{ bufferCommands: false });
 var stepSchema = new Schema({
   _id: false,
   code: {
-    type: String,
+    type: String
   },
   name: {
     type: String
@@ -40,6 +39,6 @@ var workflowSchema = new Schema({
 
 
 module.exports = function(db) {
-  var model = db.model(dataset.WORKFLOW, workflowSchema, dataset.WORKFLOW);
+  var model = db.model(labels.WORKFLOW, workflowSchema, dataset.WORKFLOW);
   return model;
 };

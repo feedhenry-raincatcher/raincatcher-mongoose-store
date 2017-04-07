@@ -7,13 +7,15 @@ var Models = require('./../models');
 var Connector = require('./../lib');
 var DB = {};
 
+var mongoUri = 'mongodb://localhost:27017/raincatcher-mongo-connector';
+
 describe(config.module, function() {
   var testDal = {};
   var testDoc = {};
 
   it('should connect to test db', function(done) {
     this.timeout(2000);
-    Connector.connect(config.test.mongoUri, {}).then(function(db) {
+    Connector.connect(mongoUri, {}).then(function(db) {
       DB = db;
       done(assert.equal(DB, db));
     }, function(error) {
