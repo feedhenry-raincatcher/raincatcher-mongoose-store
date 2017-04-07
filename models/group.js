@@ -19,6 +19,6 @@ var groupSchema = new Schema({
 });
 
 module.exports = function(db) {
-  var model = db.model(labels.GPS, groupSchema, dataset.GPS);
+  var model = db.model(labels.GROUP, groupSchema, dataset.GROUP);
   return model;
 };
