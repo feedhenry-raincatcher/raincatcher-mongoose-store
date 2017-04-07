@@ -2,7 +2,6 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
 var config = require('./../lib/config');
 var labels = config.modelLabels;
 var dataset = config.datasetIDs;
