@@ -1,6 +1,6 @@
 {
   "name": "raincatcher-mongoose-store",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Direct mongoose storage",
   "main": "./lib/index.js",
   "scripts": {
