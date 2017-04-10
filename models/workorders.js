@@ -11,7 +11,8 @@ var workorderSchema = new Schema({
   type: {type: String },
   title: {type: String },
   status: {type: String },
-  startTimestamp: {type: String },
+  startTimestamp: {type: Date },
+  finishTimestamp: {type: Date },
   address: {type: String },
   location: [Number],
   summary: {type: String }
