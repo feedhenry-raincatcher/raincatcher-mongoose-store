@@ -16,7 +16,7 @@ var workorderSchema = new Schema({
   address: {type: String },
   location: [Number],
   summary: {type: String }
-},{ timestamps: true, strict: false, versionKey: false  });
+},{ timestamps: false, strict: false, versionKey: false });
 
 workorderSchema.index({
   id: 1
