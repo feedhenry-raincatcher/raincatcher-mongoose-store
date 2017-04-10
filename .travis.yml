@@ -5,7 +5,6 @@ services:
   - mongodb
   - docker
 node_js:
-  - '0.10'
   - '4.4'
 before_install:
   - npm install grunt-cli -g
