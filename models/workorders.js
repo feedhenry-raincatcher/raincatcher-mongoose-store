@@ -23,6 +23,5 @@ workorderSchema.index({
 });
 
 module.exports = function(db) {
-  var model = db.model(labels.WORKORDERS, workorderSchema, dataset.WORKORDERS);
-  return model;
+  return db.model(labels.WORKORDERS, workorderSchema, dataset.WORKORDERS);
 };
