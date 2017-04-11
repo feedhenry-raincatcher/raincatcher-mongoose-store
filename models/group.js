@@ -16,7 +16,7 @@ var groupSchema = new Schema({
   role: {
     type: String
   }
-});
+},  {timestamps: true});
 
 module.exports = function(db) {
   var model = db.model(labels.GROUP, groupSchema, dataset.GROUP);

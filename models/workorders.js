@@ -21,7 +21,7 @@ var workorderSchema = new Schema({
   address: {type: String, required: true },
   location: [Number],
   summary: {type: String, required: true }
-},{ versionKey: true });
+},{timestamps: true});
 
 workorderSchema.pre('validate', function(next) {
   if (this.startTimestamp) {

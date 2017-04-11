@@ -28,7 +28,7 @@ var messagesSchema = new Schema({
   content: {
     type: String
   }
-});
+},  {timestamps: true});
 
 module.exports = function(db) {
   var model = db.model(labels.MESSAGES, messagesSchema, dataset.MESSAGES);

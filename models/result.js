@@ -21,7 +21,7 @@ var resultSchema = new Schema({
     type: String
   },
   stepResults: Schema.Types.Mixed
-}, { strict: false, versionKey: false });
+}, {timestamps: true});
 
 module.exports = function(db) {
   var model = db.model(labels.RESULT, resultSchema, dataset.RESULT);

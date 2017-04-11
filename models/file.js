@@ -19,7 +19,7 @@ var fileSchema = new Schema({
     type: Number,
     default: 3
   }
-});
+},  {timestamps: true});
 
 module.exports = function(db) {
   var model = db.model(labels.FILE, fileSchema, dataset.FILE);

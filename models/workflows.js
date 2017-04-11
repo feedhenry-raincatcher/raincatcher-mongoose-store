@@ -20,7 +20,7 @@ var stepSchema = new Schema({
       type: String
     }
   }
-}, { strict: false, versionKey: false });
+}, {timestamps: true});
 
 mongoose.model('Step', stepSchema);
 
