@@ -107,8 +107,8 @@ describe(config.module, function() {
     });
   });
 
-  it('should delete test record', function(done) {
-    testDal.delete(testDoc).then(function() {
+  it('should remove test record', function(done) {
+    testDal.remove(testDoc).then(function() {
       done();
     }, function(error) {
       done(error);

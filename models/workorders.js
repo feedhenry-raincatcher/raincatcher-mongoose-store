@@ -6,7 +6,7 @@ var labels = config.modelLabels;
 var dataset = config.datasetIDs;
 
 function setTimestamp(time) {
-  return new Date(time).getTime()
+  return new Date(time).getTime();
 }
 
 var workorderSchema = new Schema({
@@ -21,12 +21,12 @@ var workorderSchema = new Schema({
   address: {type: String, required: true },
   location: [Number],
   summary: {type: String, required: true }
-},{ timestamps: false, strict: false, versionKey: false });
+},{ versionKey: true });
 
 workorderSchema.pre('validate', function(next) {
   if (this.startTimestamp) {
 
-    if(!moment(this.startTimestamp).isValid()) {
+    if (!moment(this.startTimestamp).isValid()) {
       return next(new Error("Invalid date value for startTimestamp"));
     }
 
@@ -35,7 +35,7 @@ workorderSchema.pre('validate', function(next) {
 
   if (this.finishTimestamp) {
 
-    if(!moment(this.finishTimestamp).isValid()) {
+    if (!moment(this.finishTimestamp).isValid()) {
       return next(new Error("Invalid date value for finishTimestamp"));
     }
 
