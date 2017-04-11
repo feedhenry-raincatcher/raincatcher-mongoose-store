@@ -1,5 +1,5 @@
 {
-  "name": "raincatcher-mongoose-store",
+  "name": "fh-wfm-mongoose-store",
   "version": "0.1.0-pre.1",
   "description": "Direct mongoose storage",
   "main": "./lib/index.js",
