@@ -1,19 +1,26 @@
-var modelSchemas = require('./../models');
-var connector = require('./connector');
-var Promise = require('bluebird');
-var Store = require('./mongoose-store');
-var label = require('./config').module;
-var _ = require('lodash');
+import modelSchemas, { SchemaMap, SchemaBuilder } from './models';
+import DB from './DB'
+import * as Promise from 'bluebird';
+import * as mongoose from 'mongoose';
+import * as _ from 'lodash';
 
-var MODELS = {};
-
-function _addCollection(name, schema, db) {
-  MODELS[name] = schema(db);
+// replace mongoose's promise implementation with Bluebird
+import * as Bluebird from 'bluebird';
+require('mongoose').Promise = Bluebird;
+declare module 'mongoose' {
+  type Promise<T> = Bluebird<T>;
 }
 
-function _handleError(error) {
-  console.error(label, error.toString());
-  return Promise.reject(error);
+import Store from './mongoose-store';
+import config from './config';
+const label = config.module;
+
+var MODELS: { [index: string]: mongoose.Model<mongoose.Document> } = {};
+
+const connector = new DB();
+
+function _addCollection(name: string, schema: SchemaBuilder, db: mongoose.Connection) {
+  MODELS[name] = schema(db);
 }
 
 /**
@@ -22,48 +29,29 @@ function _handleError(error) {
  *
  * Users have the option to set their own custom schemas if required.
  *
- * @param {string} mongoUrl - A valid mongodb connection URL
- * @param {object} options - Any custom connection parameters for the mongoose connection
- * @param {object} [customSchemas] - Optional Custom schemas passed by the application.
+ * @param mongoUrl - A valid mongodb connection URL
+ * @param options - Any custom connection parameters for the mongoose connection
+ * @param [customSchemas] - Optional Custom schemas passed by the application.
  * @returns {bluebird|exports|module.exports}
  */
-function connect(mongoUrl, options, customSchemas) {
-
+export function connect(mongoUrl: string, options: mongoose.ConnectionOptions, customSchemas: SchemaMap) {
   //The default dataset schemas to use will be the ones passed by the user
-  var schemasToUse = _.defaults(customSchemas, modelSchemas);
+  const schemasToUse = _.defaults(customSchemas, modelSchemas);
 
-  return new Promise(function(resolve) {
-    connector.connectToMongo(mongoUrl, options).then(function(db) {
-      _.each(schemasToUse, function(schema, key) {
-        _addCollection(key, schema, db);
-      });
-      resolve(true);
-    }, _handleError);
-  });
+  return connector.connectToMongo(mongoUrl, options)
+    .then(db => _.each(schemasToUse,
+      (schema, key) => _addCollection(key, schema, db)))
 }
 
-function disconnect() {
-  return new Promise(function(resolve) {
-    connector.closeConnection().then(function() {
-      resolve(true);
-    }, _handleError);
-  });
+export function disconnect() {
+  return connector.closeConnection();
 }
 
-function getDataAccessLayer(dataset) {
-  return new Promise(function(resolve, reject) {
-    var model = MODELS[dataset];
-    if (!model) {
-      return reject(new Error("Invalid model for dataset " + dataset));
-    }
-    var mongooseDal = new Store(dataset, model);
-    resolve(mongooseDal);
-  });
+export function getDAL(dataset: string) {
+  var model = MODELS[dataset];
+  if (!model) {
+    return Promise.reject(new Error("Invalid model for dataset " + dataset));
+  }
+  var mongooseDal = new Store(dataset, model);
+  return Promise.resolve(mongooseDal);
 }
-
-
-module.exports = {
-  getDAL: getDataAccessLayer,
-  connect: connect,
-  disconnect: disconnect
-};

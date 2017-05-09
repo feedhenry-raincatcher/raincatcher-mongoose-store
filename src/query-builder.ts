@@ -1,11 +1,12 @@
-var _ = require('lodash');
+// TODO: finish adding types to this
+import * as _ from 'lodash';
 
-function buildQuery(query, fields, expression) {
+function buildQuery(expression: any, query: any, fields: any) {
   var field;
   if (null !== fields) {
     for (field in  fields) {
       if (fields.hasOwnProperty(field)) {
-        var queryField = {};
+        var queryField: any = {};
         if ('undefined' !== typeof query[field]) {
           queryField = query[field];
         }
@@ -16,8 +17,7 @@ function buildQuery(query, fields, expression) {
   }
 }
 
-
-var crit_ops = {
+const crit_ops: { [index: string]: (query: any, fields: any) => void } = {
   eq: function(query, fields) {
     var field;
     if (null !== fields) {
@@ -28,34 +28,20 @@ var crit_ops = {
       }
     }
   },
-  ne: function(query, fields) {
-    buildQuery(query, fields, "$ne");
-  },
-  lt: function(query, fields) {
-    buildQuery(query, fields, "$lt");
-  },
-  le: function(query, fields) {
-    buildQuery(query, fields, "$lte");
-  },
-  gt: function(query, fields) {
-    buildQuery(query, fields, "$gt");
-  },
-  ge: function(query, fields) {
-    buildQuery(query, fields, "$gte");
-  },
-  like: function(query, fields) {
-    buildQuery(query, fields, "$regex");
-  },
-  "in": function(query, fields) {
-    buildQuery(query, fields, "$in");
-  },
+  ne: _.partial(buildQuery, '$ne'),
+  lt: _.partial(buildQuery, '$lt'),
+  le: _.partial(buildQuery, '$le'),
+  gt: _.partial(buildQuery, '$gt'),
+  ge: _.partial(buildQuery, '$ge'),
+  like: _.partial(buildQuery, '$like'),
+  'in': _.partial(buildQuery, '$in'),
   geo: function(query, fields) {
     if (null !== fields) {
       var field;
       var earthRadius = 6378; //km
       for (field in  fields) {
         if (fields.hasOwnProperty(field)) {
-          var queryField = {};
+          var queryField: any = {};
           if ('undefined' !== typeof query[field]) {
             queryField = query[field];
           }
@@ -79,9 +65,8 @@ var crit_ops = {
  * See https://access.redhat.com/documentation/en-us/red_hat_mobile_application_platform_hosted/3/html/cloud_api/fh-db for more details
  *
  * @param filterParams
- * @returns {{}}
  */
-module.exports = function createQuery(filterParams) {
+export default function createQuery(filterParams: any) {
   var query = {};
 
   if (filterParams && filterParams.key && filterParams.value) {

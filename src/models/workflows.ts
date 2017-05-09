@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
+import * as mongoose from 'mongoose';
 var Schema = mongoose.Schema;
-var config = require('./../lib/config');
+import config from '../config';
+import SchemaBuilder from './SchemaBuilder';
 var labels = config.modelLabels;
 var dataset = config.datasetIDs;
 
@@ -38,7 +39,8 @@ var workflowSchema = new Schema({
 
 
 
-module.exports = function(db) {
+const create: SchemaBuilder = function (db: mongoose.Connection) {
   var model = db.model(labels.WORKFLOW, workflowSchema, dataset.WORKFLOW);
   return model;
 };
+export default create;
