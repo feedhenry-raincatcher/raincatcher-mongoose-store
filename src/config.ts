@@ -1,6 +1,5 @@
-
 // TODO move to modules to decide what datastore they should use.
-module.exports= {
+export default {
   module: 'raincatcher-mongo-connector',
   datasetIDs: {
     WORKORDERS: 'workorders',

@@ -1,11 +1,12 @@
-var mongoose = require('mongoose');
+import * as mongoose from 'mongoose';
 var Schema = mongoose.Schema;
-var config = require('./../lib/config');
+import config from '../config';
+import SchemaBuilder from './SchemaBuilder';
 var moment = require('moment');
 var labels = config.modelLabels;
 var dataset = config.datasetIDs;
 
-function setTimestamp(time) {
+function setTimestamp(time: any) {
   return new Date(time).getTime();
 }
 
@@ -49,6 +50,7 @@ workorderSchema.index({
   id: 1
 });
 
-module.exports = function(db) {
+const create: SchemaBuilder = function (db: mongoose.Connection) {
   return db.model(labels.WORKORDERS, workorderSchema, dataset.WORKORDERS);
 };
+export default create;

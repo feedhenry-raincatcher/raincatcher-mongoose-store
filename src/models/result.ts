@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
+import * as mongoose from 'mongoose';
 var Schema = mongoose.Schema;
-var config = require('./../lib/config');
+import SchemaBuilder from './SchemaBuilder';
+import config from '../config';
 var labels = config.modelLabels;
 var dataset = config.datasetIDs;
 
@@ -23,7 +24,8 @@ var resultSchema = new Schema({
   stepResults: Schema.Types.Mixed
 }, {timestamps: true});
 
-module.exports = function(db) {
+const create: SchemaBuilder = function (db: mongoose.Connection) {
   var model = db.model(labels.RESULT, resultSchema, dataset.RESULT);
   return model;
 };
+export default create;
