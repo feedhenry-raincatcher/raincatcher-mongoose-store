@@ -6,7 +6,6 @@ var labels = config.modelLabels;
 var dataset = config.datasetIDs;
 
 var stepSchema = new Schema({
-  _id: false,
   code: {
     type: String
   },
@@ -21,7 +20,10 @@ var stepSchema = new Schema({
       type: String
     }
   }
-}, {timestamps: true});
+}, {
+  _id: false,
+  timestamps: true
+});
 
 mongoose.model('Step', stepSchema);
 

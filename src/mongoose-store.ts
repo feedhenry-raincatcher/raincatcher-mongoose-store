@@ -26,7 +26,7 @@ function convertToJSON(document: mongoose.Document) {
  *
  * @param id - The ID of the document that wasn't found
  */
-function createNoDocumentError(id: string) {
+function createNoDocumentError(id?: string) {
   var error: ErrorWithId = new Error("No document with id " + id  + " found");
   error.id = id;
   return error;
@@ -69,7 +69,7 @@ class Store {
    * @param {string} id - An ID to pass include with the error
    * @param {Promise} error - The error to handle
    */
-  handleError = function handleError(id: string, error: ErrorWithId | any) {
+  handleError = function handleError(id: string | undefined, error: ErrorWithId | any) {
     if (error.name === "ValidationError") {
       error = new Error(error.toString());
     }
@@ -116,7 +116,7 @@ class Store {
     var query;
 
     if (!_.isObject(object)) {
-      return self.handleError(null, new Error("Expected an object to update"));
+      return self.handleError(undefined, new Error("Expected an object to update"));
     }
 
     var uid = object._localuid || object.id;
@@ -126,7 +126,7 @@ class Store {
     } else if (object._localuid) {
       query = {_localuid: object._localuid};
     } else {
-      return self.handleError(null, new Error("Expected the object to have either an id or _localuid field"));
+      return self.handleError(undefined, new Error("Expected the object to have either an id or _localuid field"));
     }
 
     return this.model
@@ -147,7 +147,7 @@ class Store {
     var self = this;
 
     var id = object instanceof Object ? object.id : object;
-    return this.model.findOneAndRemove({id: id}).then(convertToJSON).catch(function(err) {
+    return this.model.findOneAndRemove({id: id}).then(convertToJSON).catch(function(err: Error) {
       return self.handleError(id, err);
     });
   }
@@ -158,7 +158,7 @@ class Store {
    *
    * @param {object} filter - Optional filter to pass when listing documents for a model. (See https://docs.mongodb.com/manual/tutorial/query-documents/)
    */
-  list = function(this: Store, filter) {
+  list = function(this: Store, filter: any) {
     var self = this;
     filter = filter || {};
 
