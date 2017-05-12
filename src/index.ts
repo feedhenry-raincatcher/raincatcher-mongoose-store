@@ -1,5 +1,5 @@
 import modelSchemas, { SchemaMap, SchemaBuilder } from './models';
-import DB from './DB'
+import DB from './DB';
 import * as Promise from 'bluebird';
 import * as mongoose from 'mongoose';
 import * as _ from 'lodash';
@@ -15,11 +15,15 @@ import Store from './mongoose-store';
 import config from './config';
 const label = config.module;
 
-var MODELS: { [index: string]: mongoose.Model<mongoose.Document> } = {};
+interface MongooseModelMap {
+  [index: string]: mongoose.Model<mongoose.Document>;
+};
+
+var MODELS: MongooseModelMap = {};
 
 const connector = new DB();
 
-function _addCollection(name: string, schema: SchemaBuilder, db: mongoose.Connection) {
+function addCollection(name: string, schema: SchemaBuilder, db: mongoose.Connection) {
   MODELS[name] = schema(db);
 }
 
@@ -31,8 +35,7 @@ function _addCollection(name: string, schema: SchemaBuilder, db: mongoose.Connec
  *
  * @param mongoUrl - A valid mongodb connection URL
  * @param options - Any custom connection parameters for the mongoose connection
- * @param [customSchemas] - Optional Custom schemas passed by the application.
- * @returns {bluebird|exports|module.exports}
+ * @param customSchemas - Optional Custom schemas passed by the application.
  */
 export function connect(mongoUrl: string, options: mongoose.ConnectionOptions, customSchemas: SchemaMap) {
   //The default dataset schemas to use will be the ones passed by the user
@@ -40,7 +43,7 @@ export function connect(mongoUrl: string, options: mongoose.ConnectionOptions, c
 
   return connector.connectToMongo(mongoUrl, options)
     .then(db => _.each(schemasToUse,
-      (schema, key) => _addCollection(key, schema, db)))
+      (schema, key) => addCollection(key, schema, db)));
 }
 
 export function disconnect() {
